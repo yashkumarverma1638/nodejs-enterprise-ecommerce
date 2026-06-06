@@ -1,6 +1,8 @@
 import express from "express";
 import helmet from "helmet";
 import cors from "cors";
+import authRoutes from "./routes/auth.routes";
+import userRoutes from "./routes/user.routes";
 
 const app = express();
 
@@ -14,5 +16,6 @@ app.get("/health", (_, res) => {
     status: "UP",
   });
 });
-
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
 export default app;

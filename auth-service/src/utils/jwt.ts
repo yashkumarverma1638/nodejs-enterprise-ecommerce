@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "super-secret-key";
-
+const JWT_SECRET =
+  process.env.JWT_SECRET || "secret";
 export const generateAccessToken = (userId: string, email: string) => {
   return jwt.sign(
     {

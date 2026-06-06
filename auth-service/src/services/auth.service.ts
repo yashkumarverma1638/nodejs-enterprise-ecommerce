@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { UserRepository } from "../repositories/user.repository";
 import { generateAccessToken } from "../utils/jwt";
-
+import { AppError } from "../utils/app-error";
 export class AuthService {
   private userRepository = new UserRepository();
 
@@ -9,7 +9,7 @@ export class AuthService {
     const existingUser = await this.userRepository.findByEmail(email);
 
     if (existingUser) {
-      throw new Error("User already exists");
+      throw new AppError("User already exists", 409);
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,7 +27,7 @@ export class AuthService {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      throw new Error("Invalid credentials");
+      throw new AppError("Invalid credentials", 401);
     }
 
     const accessToken = generateAccessToken(user.id, user.email);
